@@ -43,7 +43,7 @@ for counter, load in enumerate(loads):
     else:
         print("The key was not found in JSON file")
         KFC.Create_Sub_Folder(Key)
-        scaling_factor = 8
+        scaling_factor = 50
         print ("initial load: {}".format(load))
         scaled_load = load * scaling_factor
         Max_Strain = 0
@@ -55,7 +55,7 @@ for counter, load in enumerate(loads):
             print ("scaling factor {} -> applied load in iteration {}: {}".format(scaling_factor, itertation, scaled_load))
             LC.Load_File_Generator(scaled_load, Key)
             GG.Abaqus_Input_Generator(Key)
-            AR.Abaqus_Runner(Key, 8)
+            AR.Abaqus_Runner(Key, 4)
             Max_Strain = SRC.Max_Strain_Finder(Key)
             print ("Max Strain: {}".format(Max_Strain))
             if Max_Strain < Lower_Strain_Limit:
@@ -67,11 +67,13 @@ for counter, load in enumerate(loads):
                 scaled_load = load * scaling_factor
 
         #Insert Results to the Data Base
-        Results_Dict[Key] = {"Meta_Data": MR.Meta_reader(Key),
-                             "Initial_Load": load.tolist(),
+        Results_Dict[Key] = {"Meta_Data": {
+                              **MR.Meta_reader(Key),
                              "Scaling_Factor": scaling_factor,
+                             "Initial_Load": load.tolist(),
                              "Applied_Load": scaled_load.tolist(),
                              "Max_Total_Strain": Max_Strain,
+                                },
                              "Results": RP.Results_Reader(Key)}
 
     DH.Json_Database_Creator(Results_Dict, "Data_Base_Updated.json")

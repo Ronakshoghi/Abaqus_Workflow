@@ -49,8 +49,6 @@ V4,1, 0.0
 *Node Output
 U,RF,CF,COORD
 *Element Output, directions=YES
-SDV156,SDV157,SDV158
-SDV159,SDV160,SDV161
 S,LE
 ** HISTORY OUTPUT: H-Output-1
 **
